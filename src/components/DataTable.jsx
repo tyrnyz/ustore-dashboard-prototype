@@ -7,6 +7,8 @@ const FSN_BADGE = {
   N: 'bg-red-100 text-red-700 border border-red-300',
 };
 
+const HVL_BADGE = 'bg-purple-100 text-purple-700 border border-purple-300';
+
 const STATUS_BADGE = {
   'REORDER NOW': 'bg-red-100 text-red-700 border border-red-300',
   'APPROACHING': 'bg-amber-100 text-amber-700 border border-amber-300',
@@ -18,21 +20,15 @@ export default function DataTable({ columns, data }) {
   const [sortDir, setSortDir] = useState('asc');
 
   function handleSort(key) {
-    if (sortCol === key) {
-      setSortDir(d => (d === 'asc' ? 'desc' : 'asc'));
-    } else {
-      setSortCol(key);
-      setSortDir('asc');
-    }
+    if (sortCol === key) setSortDir(d => (d === 'asc' ? 'desc' : 'asc'));
+    else { setSortCol(key); setSortDir('asc'); }
   }
 
   const sorted = sortCol
     ? [...data].sort((a, b) => {
         const av = a[sortCol], bv = b[sortCol];
         if (typeof av === 'number') return sortDir === 'asc' ? av - bv : bv - av;
-        return sortDir === 'asc'
-          ? String(av).localeCompare(String(bv))
-          : String(bv).localeCompare(String(av));
+        return sortDir === 'asc' ? String(av).localeCompare(String(bv)) : String(bv).localeCompare(String(av));
       })
     : data;
 
@@ -49,11 +45,9 @@ export default function DataTable({ columns, data }) {
               >
                 <div className="flex items-center gap-1">
                   {col.label}
-                  {sortCol === col.key ? (
-                    sortDir === 'asc' ? <ChevronUp size={12} /> : <ChevronDown size={12} />
-                  ) : (
-                    <ChevronsUpDown size={12} className="text-gray-300" />
-                  )}
+                  {sortCol === col.key
+                    ? (sortDir === 'asc' ? <ChevronUp size={12} /> : <ChevronDown size={12} />)
+                    : <ChevronsUpDown size={12} className="text-gray-300" />}
                 </div>
               </th>
             ))}
@@ -75,4 +69,4 @@ export default function DataTable({ columns, data }) {
   );
 }
 
-export { FSN_BADGE, STATUS_BADGE };
+export { FSN_BADGE, HVL_BADGE, STATUS_BADGE };
